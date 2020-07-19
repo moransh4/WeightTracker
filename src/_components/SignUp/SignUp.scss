@@ -1,0 +1,26 @@
+.sign-up{
+    h2 {
+      margin-top: 0px;
+      margin-bottom: 25px;
+      font-size: 25px;
+    }
+    form {
+      .line{
+        width: 100%;
+        margin-bottom: 15px;
+        .MuiFormControl-root{
+          width: 100%;
+        }
+        .MuiOutlinedInput-adornedEnd{
+          width: 100%;
+        }
+      }
+
+      button{
+        margin-right: 15px;
+      }
+
+
+    }
+  }
+  

@@ -1,4 +1,4 @@
-# react-hooks-redux-registration-login-example
+# weights-tracker-app
 
 React Hooks + Redux - User Registration and Login Tutorial & Example
 

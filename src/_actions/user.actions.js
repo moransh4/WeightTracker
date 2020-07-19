@@ -6,6 +6,8 @@ import { history } from '../_helpers';
 export const userActions = {
     login,
     logout,
+    userRegisterStep1,
+    userRegisterStep2,
     register,
     getAll,
     delete: _delete
@@ -38,11 +40,22 @@ function logout() {
     return { type: userConstants.LOGOUT };
 }
 
-function register(user) {
+function userRegisterStep1(userDetails) {
     return dispatch => {
-        dispatch(request(user));
+        dispatch({ type: userConstants.REGISTER_STEP_1, userDetails });
+    }
+}
 
-        userService.register(user)
+function userRegisterStep2(userConnection) {
+    return dispatch => {
+        dispatch({ type: userConstants.REGISTER_STEP_2, userConnection });
+    }}
+
+function register(userDetails , userConnection) {
+    return dispatch => {
+        dispatch(request(userConnection));
+
+        userService.register(userDetails , userConnection)
             .then(
                 user => { 
                     dispatch(success());
@@ -56,7 +69,7 @@ function register(user) {
             );
     };
 
-    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
+    function request(userConnection) { return { type: userConstants.REGISTER_REQUEST, userConnection } }
     function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }

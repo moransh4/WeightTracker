@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect ,useState } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,22 +8,35 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import './App.scss';
 
 function App() {
     const alert = useSelector(state => state.alert);
     const dispatch = useDispatch();
+    const [apiResponse, setApiResponse] = useState("");
+    const requestOptions = {
+        headers: { 'Content-Type': 'application/json' },
+    };
 
     useEffect(() => {
         history.listen((location, action) => {
             // clear alert on location change
             dispatch(alertActions.clear());
         });
+
+        fetch("http://localhost:8080/weights/158815939809898566", requestOptions)
+        .then(res => {
+            setApiResponse(res);
+        })
+        .catch(err => {
+            err
+        })
+
     }, []);
 
+
     return (
-        <div className="jumbotron">
-            <div className="container">
-                <div className="col-md-8 offset-md-2">
+        <div className="">
                     {alert.message &&
                         <div className={`alert ${alert.type}`}>{alert.message}</div>
                     }
@@ -35,8 +48,6 @@ function App() {
                             <Redirect from="*" to="/" />
                         </Switch>
                     </Router>
-                </div>
-            </div>
         </div>
     );
 }

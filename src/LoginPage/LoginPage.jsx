@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { userActions } from '../_actions';
+import './LoginPage.scss'
 
 function LoginPage() {
     const [inputs, setInputs] = useState({
@@ -34,7 +34,9 @@ function LoginPage() {
     }
 
     return (
-        <div className="col-lg-8 offset-lg-2">
+        <div className="container">
+        <div className="col-lg-5 center">
+            <h1>Weights Tracker App</h1>
             <h2>Login</h2>
             <form name="form" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -60,6 +62,7 @@ function LoginPage() {
                 </div>
             </form>
         </div>
+    </div>
     );
 }
 

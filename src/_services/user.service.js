@@ -51,11 +51,17 @@ function getById(id) {
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
 }
 
-function register(user) {
+function register(userDetails , userConnection) {
+    
+    const bodyRequest = {
+        user_details: userDetails,
+        user_connection: userConnection
+    }
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(bodyRequest)
     };
 
     return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);

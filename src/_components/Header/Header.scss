@@ -1,0 +1,36 @@
+.navbar-bg{
+    background-color: palevioletred !important;
+        .navbar-brand{
+            color: white;
+            font-weight: bold;
+            text-decoration-color: white;
+            text-decoration: white;
+            &:hover{
+                color: white;
+            }
+            &.active{
+                color: white;
+            }
+        }
+        .navbar-nav{
+            .show{
+                .nav-link{
+                    color: white;
+                }
+ 
+            }
+            .nav-link{
+                color: white;
+                font-weight: bold;
+                &:hover{
+                    color: white;
+                }
+                &.active{
+                    color: white;
+                }
+            }
+
+        }
+    
+
+}

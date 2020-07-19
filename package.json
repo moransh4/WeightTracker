@@ -1,9 +1,9 @@
 {
-    "name": "react-hooks-redux-registration-login-example",
+    "name": "weights-tracker-app",
     "version": "1.0.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/cornflourblue/react-hooks-redux-registration-login-example.git"
+        "url": "https://github.com/moransh4/WeightTracker.git"
     },
     "license": "MIT",
     "scripts": {
@@ -11,8 +11,12 @@
         "start": "webpack-dev-server --open"
     },
     "dependencies": {
+        "@material-ui/core": "^4.11.0",
+        "@material-ui/icons": "^4.9.1",
+        "bootstrap": "^4.5.0",
         "history": "^4.10.1",
         "react": "^16.13.0",
+        "react-bootstrap": "^1.0.1",
         "react-dom": "^16.13.0",
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.1.2",
@@ -25,8 +29,14 @@
         "@babel/preset-env": "^7.4.3",
         "@babel/preset-react": "^7.0.0",
         "babel-loader": "^8.0.5",
+        "css-loader": "^3.6.0",
         "html-webpack-plugin": "^3.2.0",
+        "mini-css-extract-plugin": "^0.9.0",
+        "node-sass": "^4.14.1",
         "path": "^0.12.7",
+        "redux-devtools-extension": "^2.13.8",
+        "sass-loader": "^9.0.1",
+        "style-loader": "^1.2.1",
         "webpack": "^4.29.6",
         "webpack-cli": "^3.3.0",
         "webpack-dev-server": "^3.2.1"

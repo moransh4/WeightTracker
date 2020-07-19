@@ -24,7 +24,7 @@ export function configureFakeBackend() {
                     default:
                         // pass through any requests not handled above
                         return realFetch(url, opts)
-                            .then(response => resolve(response))
+                            .then(response => resolve(response.json()))
                             .catch(error => reject(error));
                 }
             }
@@ -33,21 +33,20 @@ export function configureFakeBackend() {
 
             function authenticate() {
                 const { username, password } = body;
-                const user = users.find(x => x.username === username && x.password === password);
+                const user = users.find(x => x.user_connection.username === username && x.user_connection.password === password);
                 if (!user) return error('Username or password is incorrect');
                 return ok({
-                    id: user.id,
-                    username: user.username,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    id: user.user_connection.id,
+                    username: user.user_connection.username,
+                    firstName: user.user_details.firstName,
+                    lastName: user.user_details.lastName,
                     token: 'fake-jwt-token'
                 });
             }
 
             function register() {
                 const user = body;
-    
-                if (users.find(x => x.username === user.username)) {
+                if (users.find(x => x.user_connection.username === user.user_connection.username)) {
                     return error(`Username  ${user.username} is already taken`);
                 }
     
