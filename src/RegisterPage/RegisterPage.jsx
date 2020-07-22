@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { userActions } from '../_actions';
-import { useDispatch } from 'react-redux';
+import { userActions, registrationActions } from '../_actions';
+import {  useDispatch , useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -122,81 +122,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const DEFAULT_STATE_USER_DETAILS = {
-  firstName: '',
-  lastName: '',
-  gender: '',
-  age: '',
-  height: '',
-  weight: '',
-  sportLevel: '',
-  jobTitle: '',
-}
-
-const DEFAULT_STATE_USER_CONNECTION = {
-  username: '',
-  email: '',
-  password: ''
-}
 
 
  function RegisterPage() {
   const classes = useStyles();
   const steps = ['Settings', 'Sign Up', 'Done'];
   const dispatch = useDispatch();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [userDetails, setUserDetails] = useState(DEFAULT_STATE_USER_DETAILS);
-  const [userConnection, setUserConnection] = useState(DEFAULT_STATE_USER_CONNECTION);
+  const activeStep = useSelector(state => state.registration.currentStep);
 
-   //Call first time component render-  reset login status - set to logout 
+   //Call first time component  -  reset login status - set to logout 
     useEffect(() => {
+        dispatch(registrationActions.resetRegistration());
         dispatch(userActions.logout());
     }, []);
 
-  const handleNext = () => {
-    switch (activeStep) {
-      case 0:
-        dispatch(userActions.userRegisterStep1(userDetails));
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        break;
-      case 1:
-        dispatch(userActions.userRegisterStep2(userConnection));
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        break;      
-      case 2:
-        dispatch(userActions.register(userDetails,userConnection));
-        break;      
-      default:
-        break;      
-    }
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setUserDetails(DEFAULT_STATE_USER_DETAILS);
-    setUserConnection(DEFAULT_STATE_USER_CONNECTION);
-    setActiveStep(0);
-  };
-
-  const  handleInputPersonalDetailsValue = (userDetailsInput) => {
-    setUserDetails(userDetailsInput);
-}
-
-  const  handleInputUserConnectionValue = (userConnectionInput) => {
-    setUserConnection(userConnectionInput);
-  }
-
 const  getStepContent = () => {
   switch (activeStep) {
-    case 0:
-      return <PersonalDetails userDetails={userDetails} handleInputPersonalDetails={handleInputPersonalDetailsValue} handleNext={handleNext}/>;
     case 1:
-      return <SignUp userConnection={userConnection} handleInputUserConnection={handleInputUserConnectionValue}  handleNext={handleNext} handleBack={handleBack}/>;
+      return <PersonalDetails />;
     case 2:
-      return <FinishRegistering handleNext={handleNext} handleReset={handleReset} ></FinishRegistering>;
+      return <SignUp />;
+    case 3:
+      return <FinishRegistering />;
     default:
       return 'Unknown step';
   }
@@ -205,7 +152,7 @@ const  getStepContent = () => {
   return (
     <div className={classes.root}>
       <h1 className={classes.title}>Welcom To Weights Tracker App</h1>
-      <Stepper className={classes.stepperWrapper} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+      <Stepper className={classes.stepperWrapper} alternativeLabel activeStep={activeStep - 1} connector={<ColorlibConnector />}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>

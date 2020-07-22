@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import {  useDispatch, useSelector } from 'react-redux';
+import { registrationActions } from '../../_actions';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -24,57 +26,20 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
-function PersonalDetails(props) {
-    const [user, setUser] = useState(props.userDetails);
-    const [submitForm , setSubmitForm] = useState(false);
+function PersonalDetails() {
     const classes = useStyles();
-
-    const  handleNext = () => {
-        if(!user.firstName || !user.lastName || !user.age || !user.height || !user.weight || !user.gender){
-            setSubmitForm(true);
-            return;
-        }
-        props.handleNext();
-    }
+    const user = useSelector(state => state.registration.userDetails);
+    const formInvalid = useSelector(state => state.registration.form1Invalid);
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        switch(name) {
-            case 'firstName': 
-            case 'lastName': 
-            {  
-                if(/^[a-z\u05D0-\u05EA']+$/i.test(value) || value == ''){
-                    setUser(user => ({ ...user, [name]: value }));    
-                } 
-                break;
-            }
-            case 'age': {
-                if(/^[0-9]{0,3}?$/.test(value)){
-                    setUser(user => ({ ...user, [name]: value }));    
-                }
-                break;
-            }
-            case 'height':
-            case 'weight':
-            {
-                if(/^\d{0,3}(\.\d{0,2})?$/.test(value)){
-                    setUser(user => ({ ...user, [name]: value }));    
-                }
-                break;
-            }
-            case 'jobTitle':
-            case 'gender':
-            case 'sportLevel':
-            {
-                setUser(user => ({ ...user, [name]: value }));    
-               break;
-            }
-         }
-         props.handleInputPersonalDetails(user);
-
+        dispatch(registrationActions.handleChangeForm1(e.target));
     }
 
+
+    const  handleNext = () => {
+        dispatch(registrationActions.submitStep1(user));
+    }
 
     return (
         <div className="personal-details">
@@ -83,16 +48,16 @@ function PersonalDetails(props) {
             <form name="form" className={classes.root} noValidate autoComplete="off">
                 <div className="wrapper-inline-fields">
                     <div className="inline">
-                    <TextField error={submitForm && !user.firstName ? true : false} id="firstName" name="firstName" label="First Name *" value={user.firstName} variant="outlined" onChange={handleChange}/>
+                    <TextField error={formInvalid && !user.firstName ? true : false} id="firstName" name="firstName" label="First Name *" value={user.firstName} variant="outlined" onChange={handleChange}/>
                     </div>
                     <div className="inline">
-                    <TextField error={submitForm && !user.lastName ? true : false} id="lastName" name="lastName" label="Last Name *" value={user.lastName}  variant="outlined"  onChange={handleChange}/>
+                    <TextField error={formInvalid && !user.lastName ? true : false} id="lastName" name="lastName" label="Last Name *" value={user.lastName}  variant="outlined"  onChange={handleChange}/>
                     </div>
                 </div>
                 <div className="wrapper-inline-fields">
                     <div className="inline">
                     <FormControl variant="outlined">
-                            <InputLabel id="gender-label" className={submitForm && !user.gender ? 'errorLeble' : ''}>Gender *</InputLabel>
+                            <InputLabel id="gender-label" className={formInvalid && !user.gender ? 'errorLeble' : ''}>Gender *</InputLabel>
                             <Select
                             labelId="gender-label"
                             id="gender"
@@ -100,7 +65,7 @@ function PersonalDetails(props) {
                             label="Gender *"
                             name="gender"
                             onChange={handleChange}
-                            error={submitForm && !user.gender ? true : false}
+                            error={formInvalid && !user.gender ? true : false}
                             
                             >
                             <MenuItem value="Female">Female</MenuItem>
@@ -109,15 +74,15 @@ function PersonalDetails(props) {
                     </FormControl>
                     </div>
                     <div className="inline">
-                        <TextField error={submitForm && !user.age ? true : false} id="age" name="age" value={user.age} label="Age *" variant="outlined"  onChange={handleChange}  />
+                        <TextField error={formInvalid && !user.age ? true : false} id="age" name="age" value={user.age} label="Age *" variant="outlined"  onChange={handleChange}  />
                     </div>
                 </div>
                 <div className="wrapper-inline-fields">
                     <div className="inline">
-                        <TextField error={submitForm && !user.height ? true : false} id="height" name="height" value={user.height} label="Height *" variant="outlined"  onChange={handleChange}  />
+                        <TextField error={formInvalid && !user.height ? true : false} id="height" name="height" value={user.height} label="Height *" variant="outlined"  onChange={handleChange}  />
                     </div>
                     <div className="inline">
-                        <TextField  error={submitForm && !user.weight ? true : false} id="weight" name="weight" value={user.weight} label="Weight *" variant="outlined"  onChange={handleChange}  />
+                        <TextField  error={formInvalid && !user.weight ? true : false} id="weight" name="weight" value={user.weight} label="Weight *" variant="outlined"  onChange={handleChange}  />
                     </div>
                 </div>
                 <div className="wrapper-inline-fields">
@@ -157,4 +122,6 @@ function PersonalDetails(props) {
     );
 }
 
-export { PersonalDetails };
+
+
+export  {PersonalDetails}

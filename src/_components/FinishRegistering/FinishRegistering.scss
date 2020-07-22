@@ -2,6 +2,25 @@
     float: right;
     
     button{
-        margin-right: 15px;
+        margin: 15px 0px 0px 0px;
+
+        &.btn-finish{
+          width: 100%;
+        }
+
       }
+
+      .inline{
+        display: flex;
+        justify-content: space-between;       
+
+        button{
+          width: 47%;
+          display: inline-block;
+        }
+      }
+
+   
+
+      
 }

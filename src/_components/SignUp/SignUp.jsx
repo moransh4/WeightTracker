@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {  useDispatch, useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -8,26 +9,26 @@ import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import { registrationActions } from '../../_actions';
 import   './SignUp.scss';
 
-function SignUp(props) {
-    const [userConnection, setUserConnection] = useState(props.userConnection);
-    const [submitForm , setSubmitForm] = useState(false);
+function SignUp() {
+    const user = useSelector(state => state.registration.userConnection);
+    const formInvalid = useSelector(state => state.registration.form2Invalid);
     const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        //  Merge of userConnection object with the key value from the left 
-        setUserConnection(userConnection => ({ ...userConnection, [name]: value }));
-        props.handleInputUserConnection(userConnection);
+        dispatch(registrationActions.handleChangeForm2(e.target));
     }
 
-    const handleNext = () => {
-        if(!userConnection.username || !userConnection.email || !userConnection.password ){
-            setSubmitForm(true);
-            return;
-        }
-        props.handleNext();
+
+    const  handleNext = () => {
+        dispatch(registrationActions.submitStep2(user));
+    }
+
+    const handleBack = () => {
+        dispatch(registrationActions.changeCurrentStep(1));
     }
 
 
@@ -37,22 +38,22 @@ function SignUp(props) {
             <h2>Sign Up</h2>
             <form name="form"  noValidate autoComplete="off">
                 <div className="line">
-                    <TextField error={submitForm && !userConnection.username ? true : false} id="username" name="username" label="UserName" value={userConnection.username} variant="outlined" onChange={handleChange}/>
+                    <TextField error={formInvalid && !user.username ? true : false} id="username" name="username" label="UserName" value={user.username} variant="outlined" onChange={handleChange}/>
                 </div>
                 <div className="line">
-                    <TextField error={submitForm && !userConnection.email ? true : false} id="email" name="email" label="email" value={userConnection.email} variant="outlined" onChange={handleChange}/>
+                    <TextField error={formInvalid && !user.email ? true : false} id="email" name="email" label="email" value={user.email} variant="outlined" onChange={handleChange}/>
                 </div>
                 <div className="line">
                 <FormControl variant="outlined">
-                <InputLabel htmlFor="password" error={submitForm && !userConnection.password ? true : false}>Password</InputLabel>
+                <InputLabel htmlFor="password" error={formInvalid && !user.password ? true : false}>Password</InputLabel>
                 <OutlinedInput
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                value={userConnection.password}
+                value={user.password}
                 onChange={handleChange}
                 name="password"
                 labelWidth={70}
-                error={submitForm && !userConnection.password ? true : false}
+                error={formInvalid && !user.password ? true : false}
                 endAdornment={
                 <InputAdornment position="end">
                     <IconButton
@@ -67,7 +68,7 @@ function SignUp(props) {
                 }/> 
                 </FormControl>
                 </div>
-                <Button variant="contained" color="primary" onClick={() => props.handleBack()}>Back</Button>  
+                <Button variant="contained" color="primary" onClick={() => handleBack()}>Back</Button>  
                 <Button variant="contained" color="primary" onClick={() => handleNext()} >Next</Button>  
             </form>
             </div>
