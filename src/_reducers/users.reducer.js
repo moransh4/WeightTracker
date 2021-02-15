@@ -6,6 +6,10 @@ export function users(state = {}, action) {
           return {
             loading: true
           };
+    case userConstants.REFRESH:
+        return {
+          userId: action.id
+        };
     case userConstants.GETALL_SUCCESS:
       return {
         items: action.users

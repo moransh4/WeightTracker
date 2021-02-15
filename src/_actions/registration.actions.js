@@ -6,95 +6,75 @@ import { history } from '../_helpers';
 export const registrationActions = {
     handleChangeForm1,
     handleChangeForm2,
-    submitStep1,
-    submitStep2,
-    changeCurrentStep,
+    backBtnClick,
+    nextBtnClick,
     resetRegistration,
     register,
 };
 
 function handleChangeForm1(input) {    
-    return dispatch => {
-        dispatch({ type: registrationConstants.INPUTS_FORM1_CHANGE, input });
-    }
+    return { type: registrationConstants.SET_FORM1, input };
 }
 
-function handleChangeForm2(input) {    
-    return dispatch => {
-        dispatch({ type: registrationConstants.INPUTS_FORM2_CHANGE, input });
-    }
+function handleChangeForm2(input) {  
+    return  { type: registrationConstants.SET_FORM2, input };
 }
 
 function resetRegistration()
 {
-    return dispatch => {
-        dispatch({ type: registrationConstants.RESET_REGISTRATION });
-    }  
+    return { type: registrationConstants.RESET_REGISTRATION };
 }
 
-function submitStep1(userDetails) {
-    return dispatch => {
-        if(!userDetails.firstName || !userDetails.lastName || !userDetails.age || !userDetails.height || !userDetails.weight || !userDetails.gender)
-        {
-            dispatch(invalidForm());
+function backBtnClick() {
+    return { type: registrationConstants.SET_RESISTRATION_BACK_STEP };
+}
+
+function nextBtnClick(currentStep , form) {
+    return dispatch => { 
+        if(currentStep == 1){
+            if(!form.firstName || !form.lastName || !form.age || !form.height || !form.weight || !form.gender)
+            {
+                dispatch(invalidForm1());
+            }
+            else{
+                dispatch(next());
+            }
         }
-        else  {
-            dispatch(submitForm());
-            dispatch(changeCurrentStep(2));
-    
-        }
+        else if(currentStep == 2){
+            if(!form.email || !form.username || !form.password)
+            {
+                dispatch(invalidForm2());
+            }
+            else{
+                dispatch(next());
+            }
+        } 
     }
 
-    function invalidForm() { return { type: registrationConstants.INVALID_FORM_1} }
-    function submitForm() { return { type: registrationConstants.SUBMIT_STEP_1 } }
-    function changeCurrentStep(stepNum) { return { type: registrationConstants.CHANGE_CURRENT_STEP, stepNum }}
+    function invalidForm1() { return { type: registrationConstants.SET_FORM1_VALIDATION_STATUS} }
+    function invalidForm2() { return { type: registrationConstants.SET_FORM2_VALIDATION_STATUS} }
+    function next() { return {type: registrationConstants.SET_RESISTRATION_NEXT_STEP } }
 
 }
-
-
-function submitStep2(userConnection) {
-    return dispatch => {
-        if(!userConnection.email || !userConnection.username || !userConnection.password)
-        {
-            dispatch(invalidForm());
-        }
-        else  {
-            dispatch(submitForm());
-            dispatch(changeCurrentStep(3));
-        }
-    }
-
-    function invalidForm() { return { type: registrationConstants.INVALID_FORM_2} }
-    function submitForm() { return { type: registrationConstants.SUBMIT_STEP_2 } }
-    function changeCurrentStep(stepNum) { return { type: registrationConstants.CHANGE_CURRENT_STEP, stepNum }}
-
-}
-
-function changeCurrentStep(stepNum) {
-    return dispatch => {
-        dispatch({type: registrationConstants.CHANGE_CURRENT_STEP, stepNum });
-    }
-
-}
-
-
 
 function register(userDetails , userConnection) {
     return dispatch => {
         dispatch(request());
 
-        userService.register(userDetails , userConnection)
-            .then(
-                user => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
-                },
-                error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
-                }
-            );
+        const isRegister = userService.register(userDetails , userConnection);
+
+        if(isRegister){
+            debugger
+            dispatch(success());
+            history.push('/login');
+            dispatch(alertActions.success('Registration successful'));
+        }
+        else{
+            const error = 'תהליך הרישום למערכת נכשל';
+            dispatch(failure(error.toString()));
+            dispatch(alertActions.error(error.toString()));
+        }
+         
     };
 
     function request() { return { type: registrationConstants.REGISTER_REQUEST } }

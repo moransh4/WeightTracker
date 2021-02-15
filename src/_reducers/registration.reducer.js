@@ -5,10 +5,8 @@ const INITIAL_STATE_REGISTRATION = {
   currentStep: 1,
   // --------------------------
   form1Invalid: false,
-  submitStep1: false,
   // -------------------------
   form2Invalid: false,
-  submitStep2: false,
   // -------------------------
   successRegisteration: false,
   // -------------------------
@@ -19,7 +17,7 @@ const INITIAL_STATE_REGISTRATION = {
       age: '',
       height: '',
       weight: '',
-      sportLevel: '',
+      sportsLevel: '',
       jobTitle: '', 
     },
     userConnection: {
@@ -32,45 +30,33 @@ const INITIAL_STATE_REGISTRATION = {
 
 export function registration(state = INITIAL_STATE_REGISTRATION, action) {
   switch (action.type) {
-    case registrationConstants.CHANGE_CURRENT_STEP:
+    case registrationConstants.SET_RESISTRATION_BACK_STEP:
         return {...state,
-          currentStep: action.stepNum,
+          currentStep: state.currentStep - 1,
+        };
+    case registrationConstants.SET_RESISTRATION_NEXT_STEP:
+        return {...state,
+          form1Invalid : state.currentStep == 1 ? false : state.form1Invalid,
+          form2Invalid : state.currentStep == 2 ? false : state.form2Invalid,
+          currentStep: state.currentStep + 1,     
         };
     case registrationConstants.RESET_REGISTRATION:
       return {
         ...INITIAL_STATE_REGISTRATION 
         };
-    case registrationConstants.INPUTS_FORM1_CHANGE:
+    case registrationConstants.SET_FORM1:
         return {...state,
           userDetails : validator(state.userDetails, action.input)
         }; 
-    case registrationConstants.INPUTS_FORM2_CHANGE:
+    case registrationConstants.SET_FORM2:
         return {...state,
           userConnection : validator(state.userConnection, action.input)
         }; 
-    case registrationConstants.SUBMIT_STEP_1:
-        return ({...state,
-          ...{
-            submitStep1: true,
-            form1Invalid : false
-          }     
-        });
-    case registrationConstants.SUBMIT_STEP_2:
-        return {...state,
-          ...{
-            submitStep2: true,
-            form2Invalid : false
-          }      
-        };
-    case registrationConstants.SUBMIT_STEP_3:
-      return {...state,
-        submitStep3: true,
-      };
-    case registrationConstants.INVALID_FORM_1:
+    case registrationConstants.SET_FORM1_VALIDATION_STATUS:
       return {...state,
         form1Invalid : true
       };
-    case registrationConstants.INVALID_FORM_2:
+    case registrationConstants.SET_FORM2_VALIDATION_STATUS:
       return {...state,
         form2Invalid : true
       };

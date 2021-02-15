@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 function PersonalDetails() {
     const classes = useStyles();
     const user = useSelector(state => state.registration.userDetails);
+    const currentStep = useSelector(state => state.registration.currentStep);
     const formInvalid = useSelector(state => state.registration.form1Invalid);
     const dispatch = useDispatch();
 
@@ -36,9 +37,8 @@ function PersonalDetails() {
         dispatch(registrationActions.handleChangeForm1(e.target));
     }
 
-
     const  handleNext = () => {
-        dispatch(registrationActions.submitStep1(user));
+        dispatch(registrationActions.nextBtnClick(currentStep, user));
     }
 
     return (
@@ -91,11 +91,11 @@ function PersonalDetails() {
                             <InputLabel id="sport-level-label">Sport Level</InputLabel>
                             <Select
                             labelId="sport-level-label"
-                            id="sportLevel"
-                            value={user.sportLevel}
-                            name="sportLevel"
+                            id="sportsLevel"
+                            value={user.sportsLevel}
+                            name="sportsLevel"
                             onChange={handleChange}
-                            label="SportLevel"
+                            label="sportsLevel"
                             >
                             <MenuItem value="0.2">No sport/exercise</MenuItem>
                             <MenuItem value="0.375">Light activity (sport 1-3 times per week)</MenuItem>

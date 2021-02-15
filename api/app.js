@@ -44,7 +44,8 @@ app.use(bodyParser.json())
 app.use(weightsRouter(connection))
 app.use(usersRouter(connection))
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/user', usersRouter)
+app.use('/userDetails', usersRouter)
 app.use('/weights', weightsRouter)
 
 // catch 404 and forward to error handler
@@ -61,6 +62,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+const port = process.env.PORT || 3320;
+app.listen(port, () => {
+  console.log(`Express server listening on port ${port}`);
 });
 
 

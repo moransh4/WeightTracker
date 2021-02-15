@@ -6,8 +6,8 @@ import { App } from './App';
 import './index.scss'
 
 // setup fake backend
-import { configureFakeBackend } from './_helpers';
-configureFakeBackend();
+// import { configureFakeBackend } from './_helpers';
+// configureFakeBackend();
 
 
 render(

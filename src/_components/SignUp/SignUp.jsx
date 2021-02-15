@@ -15,6 +15,7 @@ import   './SignUp.scss';
 function SignUp() {
     const user = useSelector(state => state.registration.userConnection);
     const formInvalid = useSelector(state => state.registration.form2Invalid);
+    const currentStep = useSelector(state => state.registration.currentStep);
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
 
@@ -22,15 +23,13 @@ function SignUp() {
         dispatch(registrationActions.handleChangeForm2(e.target));
     }
 
-
     const  handleNext = () => {
-        dispatch(registrationActions.submitStep2(user));
+        dispatch(registrationActions.nextBtnClick(currentStep, user));
     }
 
     const handleBack = () => {
-        dispatch(registrationActions.changeCurrentStep(1));
+        dispatch(registrationActions.backBtnClick());
     }
-
 
     return(
         <div className="sign-up">

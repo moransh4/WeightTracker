@@ -13,25 +13,16 @@ import './App.scss';
 function App() {
     const alert = useSelector(state => state.alert);
     const dispatch = useDispatch();
-    const [apiResponse, setApiResponse] = useState("");
-    const requestOptions = {
-        headers: { 'Content-Type': 'application/json' },
-    };
+    // const [apiResponse, setApiResponse] = useState("");
+    // const requestOptions = {
+    //     headers: { 'Content-Type': 'application/json' },
+    // };
 
     useEffect(() => {
         history.listen((location, action) => {
             // clear alert on location change
             dispatch(alertActions.clear());
         });
-
-        fetch("http://localhost:8080/weights/158815939809898566", requestOptions)
-        .then(res => {
-            setApiResponse(res);
-        })
-        .catch(err => {
-            err
-        })
-
     }, []);
 
 

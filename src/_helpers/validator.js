@@ -25,7 +25,7 @@ export const validator = (state , input) => {
         }
         case 'jobTitle':
         case 'gender':
-        case 'sportLevel':
+        case 'sportsLevel':
         case 'username':
         case 'password':
         case 'email':

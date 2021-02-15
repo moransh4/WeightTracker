@@ -5,6 +5,7 @@ import { history } from '../_helpers';
 
 export const userActions = {
     login,
+    getUserDetailsById,
     logout,
     getAll,
     delete: _delete
@@ -17,8 +18,21 @@ function login(username, password) {
         userService.login(username, password)
             .then(
                 user => { 
-                    dispatch(success(user));
-                    history.push('/');
+                    if (user && user.length > 0 ){
+                        // store user connection and jwt token in local storage to keep user logged in between page refreshes
+                        localStorage.setItem('user-connection', JSON.stringify(user[0]));
+                    
+                        userService.getUserDetailsById(user[0].ID).then(user =>{
+                            // store user details and jwt token in local storage to keep user logged in between page refreshes
+                            localStorage.setItem('user-details', JSON.stringify(user));
+                            dispatch(success(user));
+                            history.push('/');
+                        });
+                    }
+                    else{
+                        dispatch(failure('You have entered an invalid username or password'));
+                        dispatch(alertActions.error('You have entered an invalid username or password'));
+                    }
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -32,12 +46,26 @@ function login(username, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
+function getUserDetailsById(id) {
+    return dispatch => {
+        dispatch(request({ id }));
+
+        userService.getUserDetailsById(user.ID).then(user =>{
+            dispatch(success(user));
+        });
+    };
+
+    function request(user) { return { type: userConstants.REFRESH, id } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
 function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
 }
 
-
+//TODO: get all users - and manag - for admin user
 function getAll() {
     return dispatch => {
         dispatch(request());
@@ -55,6 +83,7 @@ function getAll() {
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
+//TODO: DELETE ACCOUNT OPTAIN FOR USER
 function _delete(id) {
     return dispatch => {
         dispatch(request(id));

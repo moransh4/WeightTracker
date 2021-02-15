@@ -6,65 +6,110 @@ export const userService = {
     logout,
     register,
     getAll,
-    getById,
+    getUserDetailsById,
     update,
     delete: _delete
 };
 
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
+const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+};
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+function login(username, password) {
+    requestOptions.method = 'POST';
+    requestOptions.body = JSON.stringify({ username, password });
+    return fetch(`${config.apiUrl}/user/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
-
             return user;
         });
 }
 
 function logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
+    localStorage.clear();
+    localStorage.removeItem('user-connection');
+    localStorage.removeItem('user-details');
+    localStorage.removeItem('users');
+
 }
 
 function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
+    requestOptions.method = 'GET';
+    requestOptions.body = undefined;
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
 }
 
-function getById(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+function getUserDetailsById(id) {
+    requestOptions.method = 'GET';
+    requestOptions.body = undefined;
+    return fetch(`${config.apiUrl}/userDetails/${id}`, requestOptions).then(handleResponse).then(res => {return res});
 }
 
-function register(userDetails , userConnection) {
-    
-    const bodyRequest = {
-        user_details: userDetails,
-        user_connection: userConnection
-    }
+function getUniqueID() {
+    return (Date.now() + ( (Math.random() * 100000).toFixed()));
+}
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bodyRequest)
+ function saveUserDetail(userDetails, uid){
+    userDetails.id = uid;
+    requestOptions.body = JSON.stringify(userDetails);
+    requestOptions.method = 'POST';
+     fetch(`${config.apiUrl}/userDetails`, requestOptions)
+    .then(res => {
+        if(res.status == "error"){
+            debugger
+            return false;          
+        }
+        else{
+            debugger
+            return true;
+        }
+    })
+    .catch(err => {
+        debugger
+        return false;          
+    })
+}
+
+ function saveUserConnection(userConnection, uid){
+    userConnection.id = uid;
+    requestOptions.body = JSON.stringify(userConnection);
+    requestOptions.method = 'POST';
+     fetch(`${config.apiUrl}/user`, requestOptions)
+    .then(res => {
+        if(res.status == "error"){
+            debugger
+            return false;          
+        }
+        else{
+            debugger
+            return true;
+        }
+    })
+    .catch(err => {
+        debugger
+        return false;          
+    })
+}
+
+ function register(userDetails , userConnection) {
+    const requestOptionsDelete = {
+        method: 'DELETE',
+        headers: authHeader()
     };
+    const uid = getUniqueID(); 
+    const isSaveUserDetails =  saveUserDetail(userDetails, uid);
+    const isSaveUserConnection =  saveUserConnection(userConnection, uid);
 
-    return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);
+    return isSaveUserDetails && isSaveUserConnection;s
+
+    // if( !isSaveUserDetails || !isSaveUserConnection ) {
+    //     fetch(`${config.apiUrl}/user/${uid}`, requestOptionsDelete);
+    //     fetch(`${config.apiUrl}/userDetails/${uid}`, requestOptionsDelete);
+    //     return false;
+    // }
+    // return true;
 }
 
 function update(user) {
@@ -100,7 +145,6 @@ function handleResponse(response) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-
         return data;
     });
 }

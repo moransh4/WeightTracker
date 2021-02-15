@@ -11,14 +11,14 @@ function FinishRegistering() {
     const userDetails = useSelector(state => state.registration.userDetails);
 
     const handleBack = () => {
-        dispatch(registrationActions.changeCurrentStep(2));
+        dispatch(registrationActions.backBtnClick());
     }
     
     const handleReset = () => {
         dispatch(registrationActions.resetRegistration());
     }
 
-    const handleNext = () => {
+    const register = () => {
         dispatch(registrationActions.register(userDetails , userConnection));
     }
 
@@ -28,10 +28,10 @@ function FinishRegistering() {
             <p>
                 You are now done! 
             </p>
-            <Button variant="contained" color="primary" className="btn-finish" onClick={() => handleNext()}>Submit & Let's Go!</Button>
+            <Button variant="contained" color="primary" className="btn-finish" onClick={() => register()}>Submit & Let's Go!</Button>
             <div className="inline">
-            <Button variant="contained" color="dark" className="btn-reset" onClick={() => handleReset()}>Reset</Button> 
-            <Button variant="contained" color="dark" className="btn-back" onClick={() => handleBack()}>Back</Button> 
+            <Button variant="contained" color="primary" className="btn-back" onClick={() => handleBack()}>Back</Button> 
+            <Button variant="contained" color="secondary" className="btn-reset" onClick={() => handleReset()}>Reset</Button> 
             </div>
         </div>
     );

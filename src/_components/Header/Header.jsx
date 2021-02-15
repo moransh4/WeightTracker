@@ -11,7 +11,9 @@ export default class Header extends React.Component{
 
 
     render(){
-        const username = "Hello " + this.props.username;
+        const name = this.props.username;
+        const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1)
+        const hello = "Hello " + nameCapitalized;
         return (
             <Navbar expand="lg" className="justify-content-between navbar-bg">
             <Navbar.Brand href="#home">WeightTracker</Navbar.Brand>
@@ -27,7 +29,7 @@ export default class Header extends React.Component{
                 </NavDropdown>
                 </Nav>
                 <Nav>
-                <NavDropdown title={username} id="basic-nav-dropdown">
+                <NavDropdown title={hello} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#profile">Profile</NavDropdown.Item>
                     <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
