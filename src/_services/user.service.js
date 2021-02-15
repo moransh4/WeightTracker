@@ -58,16 +58,13 @@ function getUniqueID() {
      fetch(`${config.apiUrl}/userDetails`, requestOptions)
     .then(res => {
         if(res.status == "error"){
-            debugger
             return false;          
         }
         else{
-            debugger
             return true;
         }
     })
     .catch(err => {
-        debugger
         return false;          
     })
 }
@@ -79,37 +76,26 @@ function getUniqueID() {
      fetch(`${config.apiUrl}/user`, requestOptions)
     .then(res => {
         if(res.status == "error"){
-            debugger
             return false;          
         }
         else{
-            debugger
             return true;
         }
     })
     .catch(err => {
-        debugger
         return false;          
     })
 }
 
- function register(userDetails , userConnection) {
+ async function register(userDetails , userConnection) {
     const requestOptionsDelete = {
         method: 'DELETE',
         headers: authHeader()
     };
     const uid = getUniqueID(); 
-    const isSaveUserDetails =  saveUserDetail(userDetails, uid);
-    const isSaveUserConnection =  saveUserConnection(userConnection, uid);
-
-    return isSaveUserDetails && isSaveUserConnection;s
-
-    // if( !isSaveUserDetails || !isSaveUserConnection ) {
-    //     fetch(`${config.apiUrl}/user/${uid}`, requestOptionsDelete);
-    //     fetch(`${config.apiUrl}/userDetails/${uid}`, requestOptionsDelete);
-    //     return false;
-    // }
-    // return true;
+    const isSaveUserDetails = await saveUserDetail(userDetails, uid);
+    const isSaveUserConnection = await saveUserConnection(userConnection, uid);
+    return (isSaveUserDetails && isSaveUserConnection);
 }
 
 function update(user) {

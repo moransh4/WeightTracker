@@ -64,7 +64,6 @@ function register(userDetails , userConnection) {
         const isRegister = userService.register(userDetails , userConnection);
 
         if(isRegister){
-            debugger
             dispatch(success());
             history.push('/login');
             dispatch(alertActions.success('Registration successful'));

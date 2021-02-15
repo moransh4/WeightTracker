@@ -26,7 +26,7 @@ function createRouter(db) {
         if (error) {
           res.status(500).json({status: 'error'});
         } else {
-          console.log(res);
+          console.log("save userDetails");
           res.status(200).json(results);
         }
       }
@@ -128,7 +128,7 @@ function createRouter(db) {
           console.error(error);
           res.status(500).json({status: 'error'});
         } else {
-          console.log(res);
+          console.log("save user connection");
           res.status(200).json({status: 'ok'});
         }
       }

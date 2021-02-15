@@ -26,9 +26,8 @@ function HomePage(props) {
         <div className="">
             <Header username={user.FirstName}></Header>
             <div className="container">
-                <h1>Hi {user.FistName}!</h1>
-                <p>You're logged in with React Hooks!!</p>
-                <h3>All registered users:</h3>
+                <h1>Hi {user.FirstName}!</h1>
+                <h2>Welcome To Weights Tracker App!!</h2>
                 <p>
                     <Link to="/login">Logout</Link>
                 </p>   
