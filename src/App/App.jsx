@@ -8,16 +8,13 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import {AddWeights} from '../_components/AddWeights/AddWeights';
 import './App.scss';
 
 function App() {
     const alert = useSelector(state => state.alert);
     const dispatch = useDispatch();
-    // const [apiResponse, setApiResponse] = useState("");
-    // const requestOptions = {
-    //     headers: { 'Content-Type': 'application/json' },
-    // };
-
+ 
     useEffect(() => {
         history.listen((location, action) => {
             // clear alert on location change
@@ -36,7 +33,7 @@ function App() {
                             <PrivateRoute exact path="/" component={HomePage} />
                             <Route path="/login" component={LoginPage} />
                             <Route path="/register" component={RegisterPage} />
-                            <Redirect from="*" to="/" />
+                            {/* <Redirect from="*" to="/" /> */}
                         </Switch>
                     </Router>
         </div>
