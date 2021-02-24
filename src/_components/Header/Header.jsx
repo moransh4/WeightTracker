@@ -10,18 +10,13 @@ import { Route, Redirect, Switch, Router, Link, useRouteMatch  } from 'react-rou
 export default class Header extends React.Component{
     constructor(props){
         super(props)     
-        // const {url, path} =  useRouteMatch();
-        // this.setState = {
-        //     url : url
-        // }
+
     }  
 
     render(){
         const name = this.props.username;
         const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1)
         const hello = "Hello " + nameCapitalized;
-        const url = this.state.url;
-        debugger
         return (
             <Navbar expand="lg" className="justify-content-between navbar-bg">
             <Navbar.Brand href="#home">WeightTracker</Navbar.Brand>

@@ -8,7 +8,6 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
-import {AddWeights} from '../_components/AddWeights/AddWeights';
 import './App.scss';
 
 function App() {
