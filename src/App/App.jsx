@@ -8,6 +8,7 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import {Test} from '../_components/test'
 import './App.scss';
 
 function App() {
@@ -29,10 +30,12 @@ function App() {
                     }
                     <Router history={history}>
                         <Switch>
-                            <PrivateRoute exact path="/" component={HomePage} />
+                            <PrivateRoute exact path="/" />
+                            <PrivateRoute path="/weight"/>
                             <Route path="/login" component={LoginPage} />
                             <Route path="/register" component={RegisterPage} />
-                            {/* <Redirect from="*" to="/" /> */}
+                            <Route path="/test" component={Test} />
+                            <Route path="*" >Not Found 404</Route>
                         </Switch>
                     </Router>
         </div>

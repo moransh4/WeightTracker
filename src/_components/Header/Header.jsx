@@ -9,12 +9,12 @@ import { Route, Redirect, Switch, Router, Link, useRouteMatch  } from 'react-rou
 
 export default class Header extends React.Component{
     constructor(props){
-        super(props)     
+        super(props) 
 
     }  
 
     render(){
-        const name = this.props.username;
+        const name = this.props.user.FirstName;
         const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1)
         const hello = "Hello " + nameCapitalized;
         return (
@@ -25,8 +25,8 @@ export default class Header extends React.Component{
                 <Nav className="mr-auto">
                 <Nav.Link href="#home">Home</Nav.Link>
                 <NavDropdown title="Weights" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="/addWeight">Add</NavDropdown.Item>
-                    <NavDropdown.Item href="/editWeight">Edit</NavDropdown.Item>
+                    <NavDropdown.Item href="/weight/add">Add</NavDropdown.Item>
+                    <NavDropdown.Item href="/weight/edit">Edit</NavDropdown.Item>
                     {/* <Link to={`${this.state.url}/addWeight`}>addWeight</Link>
                     <Link to="/editWeight">editWeight</Link> */}
                     {/* <NavDropdown.Divider />

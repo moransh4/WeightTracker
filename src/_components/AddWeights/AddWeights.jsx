@@ -7,7 +7,7 @@ import './AddWeights.scss'
 
 function AddWeights() {
     const dispatch = useDispatch();
-debugger  
+  
     return (
         <div className="">
                 <h1>Add Weights</h1>

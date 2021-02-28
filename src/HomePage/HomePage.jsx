@@ -12,10 +12,9 @@ import { history } from '../_helpers';
 
 
 function HomePage(props) {
-    const user = useSelector(state => state.authentication.user);
+    const user = JSON.parse(localStorage.getItem('user-details'));
     const dispatch = useDispatch();
     const {path} = useRouteMatch();
-
 
     useEffect(() => {
         //CHECK IF USER IS LOGIM
@@ -27,17 +26,15 @@ function HomePage(props) {
     }
 
     return (
-        user ?
+        user != null ?
         <div className="">
-            <Header username={user.FirstName}></Header>
             <div className="container">
-            {/* <Router history={history}> */}
-                <Switch>
-                    <Route exact path="/" component={Welcome}/>
-                    {/* <Route path="/addWeight" component={AddWeights}/> */}
-                    <Route path={`${path}/addWeight`} component={AddWeights}/>
-                </Switch>
-            {/* </Router> */}
+                {/* <Switch>
+                    <Route exact path={`${path}`} component={ () => <Welcome user={user}/>} />
+                    <Route path={`/weight/add`} component={AddWeights}/>
+                    <Route path={`/weight/edit`} component={AddWeights}/>
+                    <Route path="*" >Not Found 404</Route>
+                </Switch> */}
             </div>
         </div>
         : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />

@@ -5,8 +5,7 @@ import { userActions } from '../../_actions/user.actions';
 import './Welcome.scss'
 
 
-function Welcome() {
-    const user = useSelector(state => state.authentication.user);
+function Welcome(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -20,7 +19,7 @@ function Welcome() {
 
     return (
         <div className="">
-                <h1>Hi {user.FirstName}!</h1>
+                <h1>Hi {props.user.FirstName}!</h1>
                 <h2>Welcome To Weights Tracker App!!</h2>
                 <p>
                     <Link to="/login">Logout</Link>
